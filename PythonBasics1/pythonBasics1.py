@@ -1,4 +1,4 @@
-# Python Activtiy
+# Python Activity
 # 
 # Fill in the code for the functions below. 
 # The starter code for each function includes a 'return'
@@ -8,10 +8,16 @@
 # Define a function starts_with(s, char) that takes a string and a character
 # and returns true if the string starts with that character and false otherwise. 
 def starts_with(s, char):
-  # YOUR CODE HERE
-  
-  return
+  if len(s) == 0 and char == " ":
+    return False
 
+  if len(s) == 0:
+    return True
+  elif s[0]==char:
+    return True
+  else: 
+    return False
+  
 # Part B. starts_with_vowel
 # Define a function starts_with_vowel(s) that takes a string and
 # returns true if the string starts with a vowel and false otherwise. 
