@@ -37,7 +37,7 @@ def starts_with_consonant(s):
     return False
 
 
-  if re.match('^[A, E, I, O, U,a , e, i, o, u,#]', s[0]):
+  if re.match('^[A, E, I, O, U,a , e, i, o, u,\W]', s[0]):
     return False
   else:
     return True
@@ -50,5 +50,14 @@ def starts_with_consonant(s):
 # Hint: Use regular expressions to match for the pattern of a binary number that is a multiple of 4.
 def binary_multiple_of_4(s):
   # YOUR CODE HERE
+  if len(s) == 0:
+    return False
 
-  return
+
+  x = re.search("^[01]", s)
+  y = re.search("0$", s)
+  if x and y:
+    return True
+  else:
+    return False
+
