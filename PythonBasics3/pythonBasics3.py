@@ -14,6 +14,15 @@ import re
 # Note: Be sure to use RegEx!
 def starts_with_number(s):
   # YOUR CODE HERE
+  if len(s) == 0:
+    return False
+
+  p = '^[0-9]'
+
+  if re.match(p, s[0]):
+    return True
+  else:
+    return False
 
   return
 
