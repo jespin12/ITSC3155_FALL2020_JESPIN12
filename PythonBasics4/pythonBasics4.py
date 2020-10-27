@@ -10,7 +10,7 @@ def array_2_dict(emails, contacts):
     contactName = list(contacts)
     for x in range(len(emails)):
         contacts[contactName[x]] = emails[x]
-    return contacts 
+    return contacts
 
     
 
