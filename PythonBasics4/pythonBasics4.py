@@ -16,20 +16,33 @@ def array_2_dict(emails, contacts):
 
 # # Part B.
 def array2d_2_dict(contact_info, contacts):
-    # YOUR CODE HERE
-    if len(contact_info) == 0:
-        return contacts
+    new_dictionary = {}
+    if len(contact_info) == 0 or not any(contact_info):
+        for x in contacts:
+            new_dictionary[x] = ""
     else:
-        y = 0
-        x = 0
+        for i in range(0,len(contact_info)):
+            create_info = {}
+            create_info['email'] = contact_info[i][0]
+            create_info['phone'] = contact_info[i][1]
+            new_dictionary[list(contacts)[i]] = create_info
+    
+    return new_dictionary
 
-        for x in contacts.keys():
-            contacts[x] = contact_info[[y][a]]
-    return contacts
 
 # # Part C.
 def dict_2_array(contacts):
     # YOUR CODE HERE
-
-    return
+    arr_name = []
+    arr_email = []
+    arr_phone = []
+    if len(contacts) == 0:
+        return [arr_name, arr_email, arr_phone]
+    else: 
+        for x in contacts:
+            arr_name.append(x)
+            arr = contacts[x]
+            arr_email.append(arr["email"])
+            arr_phone.append(arr["phone"])
+    return [arr_email, arr_phone, arr_name]
 
