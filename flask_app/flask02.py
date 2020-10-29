@@ -12,6 +12,13 @@ app = Flask(__name__)     # create an app
 # get called. What it returns is what is shown as the web page
 @app.route('/index')
 @app.route('/')
+@app.route('/notes')
+def get_notes():
+    notes = {1: {'title': 'First note', 'text': 'This is my first note', 'fate': '10-1-2020'},
+             2: {'title': 'Second note', 'text': 'This is my second note', 'date': '10-02-2020'}
+             }
+
+    return render_template ('notes.html', notes=notes)
 def index():
     a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
 
