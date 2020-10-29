@@ -13,7 +13,9 @@ app = Flask(__name__)     # create an app
 @app.route('/index')
 @app.route('/')
 def index():
-    return render_template ('index.html')
+    a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
+
+    return render_template ('index.html' , user = a_user)
 
 
 
