@@ -14,12 +14,13 @@ app = Flask(__name__)     # create an app
 @app.route('/')
 @app.route('/index')
 def index():
-    a_user = {'name': 'John', 'email': 'john12@uncc.edu'}
+    a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
 
     return render_template ("index.html" , user = a_user)
 
 @app.route('/notes')
 def get_notes():
+    a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
     notes = {1: {'title': 'First note', 'text': 'This is my first note', 'date': '10-1-2020'},
              2: {'title': 'Second note', 'text': 'This is my second note', 'date': '10-02-2020'},
              3: {'title': 'Third note', 'text': 'This is my third note', 'date': '10-03-2020'}
@@ -28,7 +29,8 @@ def get_notes():
 
 @app.route('/notes/<note_id>')
 def get_note(note_id):
-    notes = {1: {'title': 'First note', 'text': 'This is my first note', 'fate': '10-1-2020'},
+    a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
+    notes = {1: {'title': 'First note', 'text': 'This is my first note', 'date': '10-1-2020'},
              2: {'title': 'Second note', 'text': 'This is my second note', 'date': '10-02-2020'},
              3: {'title': 'Third note', 'text': 'This is my third note', 'date': '10-03-2020'}
              }
