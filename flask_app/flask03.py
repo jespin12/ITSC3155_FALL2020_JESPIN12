@@ -33,6 +33,10 @@ def get_note(note_id):
              3: {'title': 'Third note', 'text': 'This is my third note', 'date': '10-03-2020'}
              }
     return render_template ("note.html", note=notes[int(note_id)])
+@app.route('/notes/new')
+def new_note():
+    a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
+    return render_template('new.html', user=a_user)
 
 
 
