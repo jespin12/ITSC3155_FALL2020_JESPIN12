@@ -29,32 +29,27 @@ notes =     {1: {'title': 'First note', 'text': 'This is my first note', 'date':
 @app.route('/')
 @app.route('/index')
 def index():
-    a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
+    a_user = db.session.query(User).filter_by(email='jespin12@uncc.edu')
 
     return render_template ("index.html" , user = a_user)
 
 @app.route('/notes')
 def get_notes():
-    a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
-    """ a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
-    notes = {1: {'title': 'First note', 'text': 'This is my first note', 'date': '10-1-2020'},
-             2: {'title': 'Second note', 'text': 'This is my second note', 'date': '10-02-2020'},
-             3: {'title': 'Third note', 'text': 'This is my third note', 'date': '10-03-2020'}
-             } """
-    return render_template ("notes.html", notes=notes, user = a_user)
+    a_user = db.session.query(User).filter_by(email='jespin12@uncc.edu')
+
+    my_notes = db.session.query(Note).all()
+
+    return render_template ("notes.html", notes=my_notes, user = a_user)
 
 @app.route('/notes/<note_id>')
 def get_note(note_id):
-    """ a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
-    notes = {1: {'title': 'First note', 'text': 'This is my first note', 'date': '10-1-2020'},
-             2: {'title': 'Second note', 'text': 'This is my second note', 'date': '10-02-2020'},
-             3: {'title': 'Third note', 'text': 'This is my third note', 'date': '10-03-2020'}
-             } """
-    return render_template ("note.html", note=notes[int(note_id)])
+    a_user = db.session.query(User).filter_by(email='jespin12@uncc.edu')
+
+    my_note=db.session.query(Note).filter_by(id=note_id)
+    
+    return render_template ("note.html", note=my_note, user=a_user)
 @app.route('/notes/new', methods=['GET', 'POST'])
 def new_note():
-    a_user = {'name': 'Jesse', 'email': 'jespin12@uncc.edu'}
-
     if request.method == 'POST' :
         title = request.form['title']
 
@@ -64,14 +59,13 @@ def new_note():
         today = date.today()
 
         today = today.strftime("%m-%d-%Y")
+        db.session.add(new_record)
+        db.session.commit()
 
-        id = len(notes)+1
-
-        notes[id] = {'title' : title, 'text': text, 'date': today}
-
-        return redirect(url_for('get_notes',name = a_user))
+        return redirect(url_for('get_notes')
 
     else: 
+        a_user = db.session.query(User).filter_by(email='jespin12@uncc.edu')
         return render_template('new.html', user=a_user)
 
 
