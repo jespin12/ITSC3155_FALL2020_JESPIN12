@@ -7,6 +7,10 @@ from flask import render_template
 from flask import request
 from flask import redirect, url_for 
 from database import db
+from models import Note as Note
+from models import User as User
+
+app = Flask(__name__)     # create an app
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
@@ -16,7 +20,6 @@ db.init_app(app)
 with app.app_context():
     db.create_all()   # run under the app context
 
-app = Flask(__name__)     # create an app
 
 notes =     {1: {'title': 'First note', 'text': 'This is my first note', 'date': '10-1-2020'},
              2: {'title': 'Second note', 'text': 'This is my second note', 'date': '10-02-2020'},
@@ -59,10 +62,11 @@ def new_note():
         today = date.today()
 
         today = today.strftime("%m-%d-%Y")
+        new_record = Note(title, text, today)
         db.session.add(new_record)
         db.session.commit()
 
-        return redirect(url_for('get_notes')
+        return redirect(url_for('get_notes'))
 
     else: 
         a_user = db.session.query(User).filter_by(email='jespin12@uncc.edu')
