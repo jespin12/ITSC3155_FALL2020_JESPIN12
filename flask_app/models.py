@@ -1,6 +1,4 @@
 from database import db 
-""" from models import Note as Note
-from models import User as User """
 
 class Note(db.Model):
     id = db.Column("id", db.Integer, primary_key=True)
