@@ -48,7 +48,7 @@ def get_notes():
 def get_note(note_id):
     a_user = db.session.query(User).filter_by(email='jespin12@uncc.edu').one()
 
-    my_note=db.session.query(Note).filter_by(id=note_id).one()
+    my_note = db.session.query(Note).filter_by(id=note_id).one_or_none()
     
     return render_template ("note.html", note=my_note, user=a_user)
 @app.route('/notes/new', methods=['GET', 'POST'])
@@ -94,6 +94,13 @@ def update_note(note_id):
 
         return render_template('new.html', note=my_note, user = a_user)
 
+@app.route('/notes/delete/<note_id>', methods=['POST'])
+def delete_note(note_id):
+    my_note = db.session.query(Note).filter_by(id=note_id).one()
+    db.session.delete(my_note)
+    db.session.commit()
+
+    return redirect(url_for('get_notes'))
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
 # To see the web page in your web browser, go to the url,
