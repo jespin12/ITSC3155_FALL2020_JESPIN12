@@ -55,6 +55,7 @@ def get_notes():
 
 @app.route('/notes/<note_id>')
 def get_note(note_id):
+    
     a_user = db.session.query(User).filter_by(email='jespin12@uncc.edu').one()
 
     my_note = db.session.query(Note).filter_by(id=note_id).one_or_none()
@@ -82,7 +83,7 @@ def new_note():
         else: 
             return render_template('new.html', user=session['user'])
     else:
-        return render_template('new.html', user=session['user'])
+        return redirect(url_for('login'))
 
 @app.route('/notes/edit/<note_id>', methods=['GET', 'POST'])
 def update_note(note_id):
@@ -119,7 +120,7 @@ def delete_note(note_id):
         return redirect(url_for('get_notes'))
     else:
         return redirect(url_for('login'))
-        
+
 @app.route('/register', methods=['POST','GET'])
 def register():
     form = RegisterForm()
@@ -164,6 +165,15 @@ def login():
     else:
         # form did not validate or GET request
         return render_template("login.html", form=login_form)
+
+@app.route('/logout')
+def logout():
+    # check if a user is saved in session
+    if session.get('user'):
+        session.clear()
+
+    return redirect(url_for('login'))
+
 
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
