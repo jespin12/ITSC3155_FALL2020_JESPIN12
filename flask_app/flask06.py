@@ -2,6 +2,7 @@
 
 # imports
 import os                 # os is used to get environment variables IP & PORT
+import bcrypt
 from flask import Flask   # Flask is the web app that we will customize
 from flask import render_template
 from flask import request
@@ -9,11 +10,15 @@ from flask import redirect, url_for
 from database import db
 from models import Note as Note
 from models import User as User
+from forms import RegisterForm
+from flask import session
+
 
 app = Flask(__name__)     # create an app
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flask_note_app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+app.config['SECRET_KEY'] = 'SE3155'
 #  Bind SQLAlchemy db object to this Flask app
 db.init_app(app)
 # Setup models
@@ -38,11 +43,14 @@ def index():
 
 @app.route('/notes')
 def get_notes():
-    a_user = db.session.query(User).filter_by(email='jespin12@uncc.edu').one()
+    if session.get('user'): 
 
-    my_notes = db.session.query(Note).all()
+        my_notes = db.session.query(Note).filter_by(user_id=session['user_id']).all()
 
-    return render_template ("notes.html", notes=my_notes, user = a_user)
+        return render_template('notes.html', notes=my_notes, user=session['user'])
+
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/notes/<note_id>')
 def get_note(note_id):
@@ -100,7 +108,27 @@ def delete_note(note_id):
     db.session.delete(my_note)
     db.session.commit()
 
-    return redirect(url_for('get_notes'))
+@app.route('/register', methods=['POST','GET'])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+
+        password_hash = bcrypt.hashpw(
+            request.form['password'].encode('utf-8'), bcrypt.gensalt())
+        first_name = request.form['firstname']
+        last_name = request.form['lastname']
+        new_record = User(first_name, last_name, request.form['email'], password_hash)
+        db.session.add(new_record)
+        db.session.commit()
+
+        session['user'] = first_name
+        
+        the_user = db.session.query(User).filter_by(email=request.form['email']).one()
+        
+        session['user_id'] = the_user.id
+        return redirect(url_for('get_notes'))
+    return render_template('register.html', form=form)
 app.run(host=os.getenv('IP', '127.0.0.1'),port=int(os.getenv('PORT', 5000)),debug=True)
 
 # To see the web page in your web browser, go to the url,
