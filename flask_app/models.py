@@ -11,7 +11,7 @@ class Note(db.Model):
 
     comments = db.relationship("Comment", backref="note", cascade="all, delete-orphan", lazy=True)
     
-    def __init__(self, title, text, date):
+    def __init__(self, title, text, date, user_id):
         self.title = title
         self.text = text
         self.date = date
